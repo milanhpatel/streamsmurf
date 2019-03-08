@@ -1,0 +1,29 @@
+language: node_js
+node_js:
+  - node # uses most recent stable node version
+services:
+  - postgresql # starts up postgres
+addons:
+  postgresql: '9.6' # highest available postgres version on Travis
+dist: trusty # uses trusty environment
+sudo: false # when on trusty, uses Docker containers for speed
+notifications:
+  email:
+    on_success: change # default: change (only when going from broken to fixed)
+    on_failure: always # default: always (which is annoying, as it should be)
+install:
+  - npm ci # faster, goes only from package-lock
+before_script:
+  - psql -c 'create database "streamsmurf-test";' -U postgres # remember to change this name if you change it elsewhere (e.g. package.json)
+script:
+  - npm test             # test the code
+  - npm run build-client # make the bundle
+
+ before_deploy:
+   - rm -rf node_modules # omit from the tarball, since we skip cleanup
+ deploy:
+   skip_cleanup: true # prevents travis from deleting the build
+   provider: heroku
+   app: streamsmurf # see README
+   api_key:
+     secure: "pM9s8+3KprZL+nclEKAD7PYtliogxgr09y5cGmIXD0Pk28/NE5qfNxJ92Ctj8V8vj/yAfFTf1jhQcSpFPm3z70AOjhgQRf/WdBXF27d1gQh/JjLRcURUrjDyARIbD2s/RKRbq5qiECSN0/VddPGDYICf+6OuR7sBguo2BTfYw9SbKoURH4aKOc6D5A8nC6EoD1F6t0NAGSluzzoHcSej+RhhO7kzSHlyiP7dVZZpSf2fvqeTLjl0z7Ax8remsU0mwb080g07CSqD9tOp74/pIfdRTwqfeHSUMz6TlcmcLND74UneP2pqGsYoFMCDb6XYvHBSr4QbhKsrplOP6v1w/OvJanet0WBqeOZ9tLW0pZWKyKFLY6xJFbuUpEsiwtx0ifclu6rJUIFl2PjB7xrSM1axZP2hhXQn4KZs2kqtwvSRAKEYa/Ya3xroSFs3G2vp3YBqLJEf3ktBOK9wDvMR995kWSTd3dCu9HzPCLwT1xEifT9j8FGKEzyvuj3uosMGdZWgh0/HX+BZWfEUz/2mjXfDfUKmlFUHQJo7f3MM9+a3omaj6YBfRAzPZ6l/m5MbKlxKdRvqF3hbGZAKTvVEjkSYOgPAdELM69780k68sRdV9XaL6Vn6o96emtonBdQ3GleG9XoxrZ01PxAnh5pRfjyN/EPon3UsK1IHU8x2Yss=" # see README
