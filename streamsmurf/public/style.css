@@ -19,3 +19,9 @@ form div {
   margin: 1em;
   display: inline-block;
 }
+
+#welcome {
+  display: flex;
+  justify-content: center;
+  font-size: 80px;
+}
