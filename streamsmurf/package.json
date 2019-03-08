@@ -1,6 +1,7 @@
 {
   "name": "streamsmurf",
   "version": "1.0.0",
+
   "description": "Twith stream dashboard",
   "engines": {
     "node": ">= 7.0.0"
