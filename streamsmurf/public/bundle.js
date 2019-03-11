@@ -919,7 +919,15 @@ function (_Component) {
     value: function render() {
       var _this2 = this;
 
-      return _react.default.createElement("div", null, this.props.games.length < 1 ? null : _react.default.createElement("ul", {
+      return _react.default.createElement("div", null, _react.default.createElement("form", {
+        id: "update-user-form",
+        onSubmit: this.handleSubmit
+      }, _react.default.createElement("span", {
+        className: "input-group-btn"
+      }, _react.default.createElement("button", {
+        className: "btn btn-outline-success",
+        type: "submit"
+      }, "Start dashboard"))), this.props.games.length < 1 ? null : _react.default.createElement("ul", {
         className: "nav justify-content-center"
       }, Object.keys(this.props.games).sort().map(function (game, i) {
         return _react.default.createElement("div", {
@@ -934,23 +942,27 @@ function (_Component) {
         }, game, " ", _react.default.createElement("span", {
           className: "badge badge-light"
         }, _this2.props.games[game])));
-      }), _react.default.createElement("h1", null, " ", this.props.games[0], " ")), _react.default.createElement("form", {
-        id: "update-user-form",
-        onSubmit: this.handleSubmit
-      }, _react.default.createElement("span", {
-        className: "input-group-btn"
-      }, _react.default.createElement("button", {
-        className: "btn-default",
-        type: "submit"
-      }, "Start dashboard"))), this.props.streamers.length < 1 ? _react.default.createElement("div", {
-        className: "container"
-      }, _react.default.createElement("h1", null, "Loading...")) : _react.default.createElement("div", {
+      }), _react.default.createElement("h1", null, " ", this.props.games[0], " ")), this.props.streamers.length < 1 ? null : _react.default.createElement("div", {
         className: "container"
       }, _react.default.createElement("h1", null, this.props.streamChannel), _react.default.createElement("ul", null, this.props.streamers.map(function (streamer) {
         if (streamer.game === _this2.state.game) {
           return _react.default.createElement("div", {
             key: streamer.id
-          }, _react.default.createElement("li", null, streamer.game), _react.default.createElement("p", null, streamer.channel.name));
+          }, _react.default.createElement("div", {
+            className: "panel panel-default"
+          }, _react.default.createElement("div", {
+            className: "panel-heading"
+          }, _react.default.createElement("h3", {
+            className: "panel-title"
+          }, "Game - ", streamer.game, " / Streamer - ", streamer.channel.name)), _react.default.createElement("div", {
+            className: "panel-body"
+          }, _react.default.createElement(_reactTwitchEmbedVideo.default, {
+            id: "twitch_embed",
+            channel: streamer.channel.name,
+            theme: "dark",
+            muted: 1,
+            layout: "video"
+          })), _react.default.createElement("hr", null)));
         }
       }))));
     }

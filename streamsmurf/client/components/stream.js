@@ -31,6 +31,14 @@ export class Stream extends Component {
   render() {
     return (
       <div>
+        <form id="update-user-form" onSubmit={this.handleSubmit}>
+          <span className="input-group-btn">
+            <button className="btn btn-outline-success" type="submit">
+              Start dashboard
+            </button>
+          </span>
+        </form>
+
           {this.props.games.length < 1 ? null : 
           <ul className="nav justify-content-center">
             {Object.keys(this.props.games).sort().map((game, i) => {
@@ -45,26 +53,24 @@ export class Stream extends Component {
           </ul>
           }
 
-        <form id="update-user-form" onSubmit={this.handleSubmit}>
-          <span className="input-group-btn">
-            <button className="btn-default" type="submit">
-              Start dashboard
-            </button>
-          </span>
-        </form>
-
         {this.props.streamers.length < 1 ? 
-        <div className="container">
-          <h1>Loading...</h1>
-        </div> : 
+        null : 
         <div className="container">
           <h1>{this.props.streamChannel}</h1>
           <ul>{this.props.streamers.map((streamer) => {
             if(streamer.game === this.state.game){
             return (
+
               <div key={streamer.id}>
-                <li>{streamer.game}</li>
-                <p>{streamer.channel.name}</p>
+              <div className="panel panel-default">
+                <div className="panel-heading">
+                  <h3 className="panel-title">Game - {streamer.game} / Streamer - {streamer.channel.name}</h3>
+                </div>
+                <div className="panel-body">
+                <ReactTwitchEmbedVideo id="twitch_embed" channel={streamer.channel.name} theme="dark" muted={1} layout="video"/>
+                </div>
+              <hr />
+              </div>
               </div>
             )}
           })}</ul>

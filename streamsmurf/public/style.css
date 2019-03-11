@@ -48,6 +48,17 @@ form div {
 
 }
 
+.panel-title {
+  color: white;
+}
+
+#twitch_embed {
+  display: flex;
+  flex-wrap: wrap;
+  width: auto;
+  height: 400px;
+}
+
 #main_routes {
 
 }
