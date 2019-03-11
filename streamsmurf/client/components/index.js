@@ -5,4 +5,7 @@
  */
 export {default as Navbar} from './navbar'
 export {default as UserHome} from './user-home'
+export {default as Demo} from './demo'
+export {default as Sidebar} from './sidebar'
+export {default as Stream} from './stream'
 export {Login, Signup} from './auth-form'
