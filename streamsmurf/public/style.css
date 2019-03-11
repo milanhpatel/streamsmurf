@@ -36,8 +36,27 @@ form div {
   flex-wrap: wrap
 }
 
+#gameRender {
+  padding: 10px
+}
+
+#welcome_sub_header{
+  text-align: center
+}
+
 #main_nav {
 
+}
+
+.panel-title {
+  color: white;
+}
+
+#twitch_embed {
+  display: flex;
+  flex-wrap: wrap;
+  width: auto;
+  height: 400px;
 }
 
 #main_routes {

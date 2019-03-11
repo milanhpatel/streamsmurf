@@ -2304,6 +2304,7 @@ fieldset:disabled a.btn {
   color: #fff;
   background-color: #007bff;
   border-color: #007bff;
+  padding: 20px;
 }
 .btn-primary:hover {
   color: #fff;

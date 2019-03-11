@@ -8,6 +8,7 @@ const GET_USER_STREAMERS = 'GET_USER_STREAMERS'
 const GET_URL = 'GET_URL'
 const GET_CHANNEL = 'GET_CHANNEL'
 const GET_USER = 'GET_USER'
+const GET_GAMES = 'GET_GAMES'
 const clientId = 'xrc1thbn1z6sc9pax8tzvndrpwjyn8'
 
 // INITIAL STATE
@@ -15,10 +16,31 @@ const clientId = 'xrc1thbn1z6sc9pax8tzvndrpwjyn8'
 const initialState = {
     streamers: [],
     streamUrl: [],
-    streamChannel: []
+    streamChannel: [],
+    games: []
+}
+
+// Utils
+const getGames = (data) => {
+    let games = {}
+    data.filter((ele) => {
+        if(ele.game.length > 1) {
+            if(!games[ele.game]) {
+                games[ele.game] = 1
+            } else {
+                games[ele.game]++
+            }
+        }
+    })
+    return games;
 }
 
 // ACTION CREATORS
+
+const getGamesAction = games => ({
+    type: GET_GAMES,
+    payload: games
+})
 
 const getUser = user => ({
     type: GET_USER,
@@ -80,7 +102,8 @@ export const fetchStreamers = () => async dispatch => {
     const {data} = await axios.get(`https://api.twitch.tv/kraken/streams?client_id=${clientId}`)
     dispatch(getStreamers(data.streams))
     console.log('DATA IS: ', data.streams)
-    // console.log('URL IS: ', data.stream.channel.url)
+    dispatch(getGamesAction(getGames(data.streams)))
+    console.log('URL IS: ', data.stream.channel.url)
   } catch (error) {
     console.error(error)
   }
@@ -118,6 +141,11 @@ export default function(state = initialState, action) {
         return {
             ...state,
             streamChannel: action.payload
+        }
+    case GET_GAMES:
+        return {
+            ...state,
+            games: action.payload
         }
     default:
       return state
