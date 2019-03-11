@@ -190,7 +190,7 @@ var AuthForm = function AuthForm(props) {
     type: "submit"
   }, displayName)), error && error.response && _react.default.createElement("div", null, " ", error.response.data, " ")), _react.default.createElement("a", {
     href: "/auth/google"
-  }, displayName, " with Google"));
+  }, displayName, " with Twitch"));
 };
 /**
  * CONTAINER
@@ -425,9 +425,10 @@ function (_Component) {
       return _react.default.createElement("div", null, _react.default.createElement(_reactBootstrap.Jumbotron, null, _react.default.createElement("h1", {
         id: "welcome",
         className: "page-header"
-      }, _react.default.createElement("small", null, " welcome:  "), " gamer "), _react.default.createElement("div", {
+      }, _react.default.createElement("small", null, " welcome:  "), " gamer. "), _react.default.createElement("div", {
         className: "text-center"
       }, _react.default.createElement(_reactBootstrap.Button, {
+        href: "",
         className: "btn btn-primary",
         variant: "primary"
       }, "Login to view Twitch dash"))));
@@ -868,29 +869,56 @@ function (_Component) {
     _classCallCheck(this, Stream);
 
     _this = _possibleConstructorReturn(this, _getPrototypeOf(Stream).call(this, props));
+    _this.handleClick = _this.handleClick.bind(_assertThisInitialized(_assertThisInitialized(_this)));
     _this.handleSubmit = _this.handleSubmit.bind(_assertThisInitialized(_assertThisInitialized(_this)));
     return _this;
   }
 
   _createClass(Stream, [{
-    key: "handleSubmit",
-    value: function handleSubmit() {
+    key: "handleClick",
+    value: function handleClick() {
       this.props.loadChannel();
+    }
+  }, {
+    key: "handleSubmit",
+    value: function handleSubmit(e) {
+      e.preventDefault(); // const userName = e.target.userName.value;
+
+      this.props.loadStreamers();
     }
   }, {
     key: "render",
     value: function render() {
+      var streamers = this.props.streamers[0];
       return _react.default.createElement("div", null, _react.default.createElement("button", {
         type: "button",
-        onClick: this.handleSubmit
-      }, "Get Streamers"), this.props.streamChannel.length < 1 ? null : _react.default.createElement("div", {
+        onClick: this.handleClick
+      }, "Get Streamers"), _react.default.createElement("form", {
+        id: "update-user-form",
+        onSubmit: this.handleSubmit
+      }, _react.default.createElement("label", {
+        htmlFor: "name"
+      }, " Twitch user name: "), _react.default.createElement("input", {
+        className: "form-control",
+        name: "userName",
+        type: "text"
+      }), _react.default.createElement("span", {
+        className: "input-group-btn"
+      }, _react.default.createElement("button", {
+        className: "btn-default",
+        type: "submit"
+      }, "Submit"))), this.props.streamers.length < 1 ? null : _react.default.createElement("div", {
         className: "container"
-      }, _react.default.createElement("h1", null, this.props.streamChannel), _react.default.createElement("div", {
+      }, _react.default.createElement("h1", null, this.props.streamChannel), _react.default.createElement("ul", null, this.props.streamers.map(function (streamer) {
+        return _react.default.createElement("div", {
+          key: streamer.id
+        }, _react.default.createElement("li", null, streamer.game), _react.default.createElement("p", null, streamer.channel.name));
+      })), _react.default.createElement("div", {
         className: "row"
       }, _react.default.createElement("div", {
         className: "col-md-4"
       }, _react.default.createElement(_reactTwitchEmbedVideo.default, {
-        channel: "tobiasfate",
+        channel: "tfue",
         theme: "dark",
         muted: 1
       })), _react.default.createElement("div", {
@@ -926,6 +954,9 @@ var mapDispatchToProps = function mapDispatchToProps(dispatch) {
     },
     loadChannel: function loadChannel() {
       return dispatch((0, _stream.fetchChannel)());
+    },
+    loadUser: function loadUser(userName) {
+      return dispatch((0, _stream.fetchUser)(userName));
     }
   };
 };
@@ -1300,7 +1331,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.default = _default;
-exports.fetchUserStreamers = exports.fetchStreamers = exports.fetchChannel = exports.fetchUrl = void 0;
+exports.fetchUserStreamers = exports.fetchStreamers = exports.fetchChannel = exports.fetchUrl = exports.fetchUser = void 0;
 
 var _axios = _interopRequireDefault(__webpack_require__(/*! axios */ "./node_modules/axios/index.js"));
 
@@ -1321,6 +1352,7 @@ var GET_STREAMERS = 'GET_STREAMERS';
 var GET_USER_STREAMERS = 'GET_USER_STREAMERS';
 var GET_URL = 'GET_URL';
 var GET_CHANNEL = 'GET_CHANNEL';
+var GET_USER = 'GET_USER';
 var clientId = 'xrc1thbn1z6sc9pax8tzvndrpwjyn8'; // INITIAL STATE
 
 var initialState = {
@@ -1328,6 +1360,13 @@ var initialState = {
   streamUrl: [],
   streamChannel: [] // ACTION CREATORS
 
+};
+
+var getUser = function getUser(user) {
+  return {
+    type: GET_USER,
+    payload: user
+  };
 };
 
 var getUserStreamers = function getUserStreamers(streamers) {
@@ -1359,7 +1398,7 @@ var getChannel = function getChannel(channel) {
 }; // THUNK CREATORS
 
 
-var fetchUrl = function fetchUrl() {
+var fetchUser = function fetchUser(userName) {
   return (
     /*#__PURE__*/
     function () {
@@ -1374,27 +1413,27 @@ var fetchUrl = function fetchUrl() {
               case 0:
                 _context.prev = 0;
                 _context.next = 3;
-                return _axios.default.get("https://api.twitch.tv/kraken/streams/riotgames?client_id=".concat(clientId));
+                return _axios.default.get("https://api.twitch.tv/helix/users?login=".concat(userName));
 
               case 3:
                 _ref2 = _context.sent;
                 data = _ref2.data;
-                dispatch(getUrl(data.stream.channel.url));
+                // dispatch(getUser(data.stream.channel.url))
                 console.log(data);
-                _context.next = 12;
+                _context.next = 11;
                 break;
 
-              case 9:
-                _context.prev = 9;
+              case 8:
+                _context.prev = 8;
                 _context.t0 = _context["catch"](0);
                 console.error(_context.t0);
 
-              case 12:
+              case 11:
               case "end":
                 return _context.stop();
             }
           }
-        }, _callee, this, [[0, 9]]);
+        }, _callee, this, [[0, 8]]);
       }));
 
       return function (_x) {
@@ -1404,9 +1443,9 @@ var fetchUrl = function fetchUrl() {
   );
 };
 
-exports.fetchUrl = fetchUrl;
+exports.fetchUser = fetchUser;
 
-var fetchChannel = function fetchChannel() {
+var fetchUrl = function fetchUrl() {
   return (
     /*#__PURE__*/
     function () {
@@ -1421,26 +1460,27 @@ var fetchChannel = function fetchChannel() {
               case 0:
                 _context2.prev = 0;
                 _context2.next = 3;
-                return _axios.default.get("https://api.twitch.tv/kraken/streams/riotgames?client_id=".concat(clientId));
+                return _axios.default.get("https://api.twitch.tv/kraken/streams/tfue?client_id=".concat(clientId));
 
               case 3:
                 _ref4 = _context2.sent;
                 data = _ref4.data;
-                dispatch(getChannel(data.stream.channel.name));
-                _context2.next = 11;
+                dispatch(getUrl(data.stream.channel.url));
+                console.log(data);
+                _context2.next = 12;
                 break;
 
-              case 8:
-                _context2.prev = 8;
+              case 9:
+                _context2.prev = 9;
                 _context2.t0 = _context2["catch"](0);
                 console.error(_context2.t0);
 
-              case 11:
+              case 12:
               case "end":
                 return _context2.stop();
             }
           }
-        }, _callee2, this, [[0, 8]]);
+        }, _callee2, this, [[0, 9]]);
       }));
 
       return function (_x2) {
@@ -1450,9 +1490,9 @@ var fetchChannel = function fetchChannel() {
   );
 };
 
-exports.fetchChannel = fetchChannel;
+exports.fetchUrl = fetchUrl;
 
-var fetchStreamers = function fetchStreamers() {
+var fetchChannel = function fetchChannel() {
   return (
     /*#__PURE__*/
     function () {
@@ -1467,28 +1507,26 @@ var fetchStreamers = function fetchStreamers() {
               case 0:
                 _context3.prev = 0;
                 _context3.next = 3;
-                return _axios.default.get("https://api.twitch.tv/kraken/streams/riotgames?client_id=".concat(clientId));
+                return _axios.default.get("https://api.twitch.tv/kraken/streams/tfue?client_id=".concat(clientId));
 
               case 3:
                 _ref6 = _context3.sent;
                 data = _ref6.data;
-                dispatch(getStreamers(data));
-                console.log('DATA IS: ', data);
-                console.log('URL IS: ', data.stream.channel.url);
-                _context3.next = 13;
+                dispatch(getChannel(data.stream.channel.name));
+                _context3.next = 11;
                 break;
 
-              case 10:
-                _context3.prev = 10;
+              case 8:
+                _context3.prev = 8;
                 _context3.t0 = _context3["catch"](0);
                 console.error(_context3.t0);
 
-              case 13:
+              case 11:
               case "end":
                 return _context3.stop();
             }
           }
-        }, _callee3, this, [[0, 10]]);
+        }, _callee3, this, [[0, 8]]);
       }));
 
       return function (_x3) {
@@ -1498,9 +1536,9 @@ var fetchStreamers = function fetchStreamers() {
   );
 };
 
-exports.fetchStreamers = fetchStreamers;
+exports.fetchChannel = fetchChannel;
 
-var fetchUserStreamers = function fetchUserStreamers() {
+var fetchStreamers = function fetchStreamers() {
   return (
     /*#__PURE__*/
     function () {
@@ -1515,30 +1553,78 @@ var fetchUserStreamers = function fetchUserStreamers() {
               case 0:
                 _context4.prev = 0;
                 _context4.next = 3;
-                return _axios.default.get('https://api.twitch.tv/kraken/streams/');
+                return _axios.default.get("https://api.twitch.tv/kraken/streams?client_id=".concat(clientId));
 
               case 3:
                 _ref8 = _context4.sent;
                 data = _ref8.data;
-                dispatch(getStreamers(data));
-                _context4.next = 11;
+                dispatch(getStreamers(data.streams));
+                console.log('DATA IS: ', data.streams); // console.log('URL IS: ', data.stream.channel.url)
+
+                _context4.next = 12;
                 break;
 
-              case 8:
-                _context4.prev = 8;
+              case 9:
+                _context4.prev = 9;
                 _context4.t0 = _context4["catch"](0);
                 console.error(_context4.t0);
 
-              case 11:
+              case 12:
               case "end":
                 return _context4.stop();
             }
           }
-        }, _callee4, this, [[0, 8]]);
+        }, _callee4, this, [[0, 9]]);
       }));
 
       return function (_x4) {
         return _ref7.apply(this, arguments);
+      };
+    }()
+  );
+};
+
+exports.fetchStreamers = fetchStreamers;
+
+var fetchUserStreamers = function fetchUserStreamers() {
+  return (
+    /*#__PURE__*/
+    function () {
+      var _ref9 = _asyncToGenerator(
+      /*#__PURE__*/
+      regeneratorRuntime.mark(function _callee5(dispatch) {
+        var _ref10, data;
+
+        return regeneratorRuntime.wrap(function _callee5$(_context5) {
+          while (1) {
+            switch (_context5.prev = _context5.next) {
+              case 0:
+                _context5.prev = 0;
+                _context5.next = 3;
+                return _axios.default.get('https://api.twitch.tv/kraken/streams/');
+
+              case 3:
+                _ref10 = _context5.sent;
+                data = _ref10.data;
+                dispatch(getStreamers(data));
+                _context5.next = 11;
+                break;
+
+              case 8:
+                _context5.prev = 8;
+                _context5.t0 = _context5["catch"](0);
+                console.error(_context5.t0);
+
+              case 11:
+              case "end":
+                return _context5.stop();
+            }
+          }
+        }, _callee5, this, [[0, 8]]);
+      }));
+
+      return function (_x5) {
+        return _ref9.apply(this, arguments);
       };
     }()
   );

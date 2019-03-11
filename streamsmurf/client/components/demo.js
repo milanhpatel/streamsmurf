@@ -8,9 +8,9 @@ export class Demo extends Component {
     return (
         <div>
           <Jumbotron>
-              <h1 id='welcome' className='page-header'><small> welcome:  </small> gamer </h1>
+              <h1 id='welcome' className='page-header'><small> welcome:  </small> gamer. </h1>
               <div className="text-center">
-                      <Button className='btn btn-primary' variant="primary">Login to view Twitch dash</Button>
+                      <Button href="" className='btn btn-primary' variant="primary">Login to view Twitch dash</Button>
               </div>
           </Jumbotron>
         </div>

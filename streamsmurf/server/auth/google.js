@@ -19,25 +19,33 @@ module.exports = router
  * process.env.GOOGLE_CALLBACK = '/your/google/callback'
  */
 
+/*
+  const googleConfig = {
+    clientID: process.env.GOOGLE_CLIENT_ID,
+    clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+    callbackURL: '/auth/twitch/callback',
+    scope: "user_read"
+  }
+*/
+
 if (!process.env.GOOGLE_CLIENT_ID || !process.env.GOOGLE_CLIENT_SECRET) {
   console.log('Twitch client ID / secret not found. Skipping Twitch OAuth.')
 } else {
   const googleConfig = {
-    clientID: process.env.GOOGLE_CLIENT_ID,
-    clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-    callbackURL: process.env.GOOGLE_CALLBACK,
+    clientID: 'xrc1thbn1z6sc9pax8tzvndrpwjyn8',
+    clientSecret: 'iloqyjmxxyg2dqg2hmq0s4wnly4e79',
+    callbackURL: '/auth/twitch/callback',
     scope: "user_read"
   }
 
   const strategy = new twitchStrategy(
     googleConfig,
     (token, refreshToken, profile, done) => {
-      const googleId = profile.id
       const name = profile.displayName
       const email = profile.emails[0].value
 
       User.findOrCreate({
-        where: {twitchId: googleId},
+        where: {twitchId: profile.id},
         // defaults: {name, email}
       })
         .then(([user]) => done(null, user))

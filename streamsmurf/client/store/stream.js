@@ -7,6 +7,7 @@ const GET_STREAMERS = 'GET_STREAMERS'
 const GET_USER_STREAMERS = 'GET_USER_STREAMERS'
 const GET_URL = 'GET_URL'
 const GET_CHANNEL = 'GET_CHANNEL'
+const GET_USER = 'GET_USER'
 const clientId = 'xrc1thbn1z6sc9pax8tzvndrpwjyn8'
 
 // INITIAL STATE
@@ -18,6 +19,11 @@ const initialState = {
 }
 
 // ACTION CREATORS
+
+const getUser = user => ({
+    type: GET_USER,
+    payload: user
+})
 
 const getUserStreamers = streamers => ({
     type: GET_USER_STREAMERS,
@@ -40,9 +46,19 @@ const getChannel = channel => ({
 })
 
 // THUNK CREATORS
+export const fetchUser = (userName) => async dispatch => {
+  try {
+    const {data} = await axios.get(`https://api.twitch.tv/helix/users?login=${userName}`)
+    // dispatch(getUser(data.stream.channel.url))
+    console.log(data)
+  } catch (error) {
+    console.error(error)
+  }
+}
+
 export const fetchUrl = () => async dispatch => {
   try {
-    const {data} = await axios.get(`https://api.twitch.tv/kraken/streams/riotgames?client_id=${clientId}`)
+    const {data} = await axios.get(`https://api.twitch.tv/kraken/streams/tfue?client_id=${clientId}`)
     dispatch(getUrl(data.stream.channel.url))
     console.log(data)
   } catch (error) {
@@ -52,7 +68,7 @@ export const fetchUrl = () => async dispatch => {
 
 export const fetchChannel = () => async dispatch => {
   try {
-    const {data} = await axios.get(`https://api.twitch.tv/kraken/streams/riotgames?client_id=${clientId}`)
+    const {data} = await axios.get(`https://api.twitch.tv/kraken/streams/tfue?client_id=${clientId}`)
     dispatch(getChannel(data.stream.channel.name))
   } catch (error) {
     console.error(error)
@@ -61,10 +77,10 @@ export const fetchChannel = () => async dispatch => {
 
 export const fetchStreamers = () => async dispatch => {
   try {
-    const {data} = await axios.get(`https://api.twitch.tv/kraken/streams/riotgames?client_id=${clientId}`)
-    dispatch(getStreamers(data))
-    console.log('DATA IS: ', data)
-    console.log('URL IS: ', data.stream.channel.url)
+    const {data} = await axios.get(`https://api.twitch.tv/kraken/streams?client_id=${clientId}`)
+    dispatch(getStreamers(data.streams))
+    console.log('DATA IS: ', data.streams)
+    // console.log('URL IS: ', data.stream.channel.url)
   } catch (error) {
     console.error(error)
   }
