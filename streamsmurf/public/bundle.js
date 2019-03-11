@@ -386,11 +386,15 @@ var _reactBootstrap = __webpack_require__(/*! react-bootstrap */ "./node_modules
 
 var _stream = _interopRequireDefault(__webpack_require__(/*! ./stream */ "./client/components/stream.js"));
 
+var _authForm = __webpack_require__(/*! ./auth-form */ "./client/components/auth-form.js");
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
 
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -400,13 +404,13 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 
 function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
 
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
 
 var Demo =
 /*#__PURE__*/
@@ -414,24 +418,53 @@ function (_Component) {
   _inherits(Demo, _Component);
 
   function Demo() {
+    var _this;
+
     _classCallCheck(this, Demo);
 
-    return _possibleConstructorReturn(this, _getPrototypeOf(Demo).apply(this, arguments));
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(Demo).call(this));
+    _this.state = {
+      login: false
+    };
+    _this.handleSubmit = _this.handleSubmit.bind(_assertThisInitialized(_assertThisInitialized(_this)));
+    return _this;
   }
 
   _createClass(Demo, [{
+    key: "handleSubmit",
+    value: function handleSubmit(e) {
+      this.setState(_defineProperty({}, e, true));
+    }
+  }, {
     key: "render",
     value: function render() {
+      var _this2 = this;
+
       return _react.default.createElement("div", null, _react.default.createElement(_reactBootstrap.Jumbotron, null, _react.default.createElement("h1", {
         id: "welcome",
         className: "page-header"
-      }, _react.default.createElement("small", null, " welcome:  "), " gamer. "), _react.default.createElement("div", {
+      }, _react.default.createElement("small", null, " welcome:  "), " gamer "), _react.default.createElement("h3", {
+        id: "welcome_sub_header",
+        className: "page-header"
+      }, "login/signup to view Twitch dash"), _react.default.createElement("div", {
         className: "text-center"
       }, _react.default.createElement(_reactBootstrap.Button, {
         href: "",
         className: "btn btn-primary",
-        variant: "primary"
-      }, "Login to view Twitch dash"))));
+        variant: "primary",
+        onClick: function onClick() {
+          return _this2.handleSubmit('login');
+        }
+      }, "Login")), _react.default.createElement("hr", null), _react.default.createElement("div", {
+        className: "text-center"
+      }, _react.default.createElement(_reactBootstrap.Button, {
+        href: "",
+        className: "btn btn-primary",
+        variant: "primary",
+        onClick: function onClick() {
+          return _this2.handleSubmit('signup');
+        }
+      }, "Signup")), !this.state.login ? null : _react.default.createElement(_authForm.Login, null), !this.state.signup ? null : _react.default.createElement(_authForm.Signup, null)));
     }
   }]);
 
@@ -609,10 +642,10 @@ var Navbar = function Navbar(_ref) {
   return _react.default.createElement("div", null, _react.default.createElement(Navigation, null, _react.default.createElement("h2", null, "StreamSmurf"), _react.default.createElement(_reactSidenav.SideNav, {
     theme: theme
   }, isLoggedIn ? _react.default.createElement("div", null, _react.default.createElement(_reactSidenav.Nav, null, _react.default.createElement(IconCnt, null, _react.default.createElement(_reactIconsKit.Icon, {
-    icon: _users.users
+    icon: _dashboard.dashboard
   }), _react.default.createElement(_reactRouterDom.Link, {
-    to: "/demo"
-  }, " ", _react.default.createElement(Text, null, "Demo"), " "))), _react.default.createElement(_reactSidenav.Nav, null, _react.default.createElement(IconCnt, null, _react.default.createElement(_reactIconsKit.Icon, {
+    to: "/stream"
+  }, " ", _react.default.createElement(Text, null, "Stream"), " "))), _react.default.createElement(_reactSidenav.Nav, null, _react.default.createElement(IconCnt, null, _react.default.createElement(_reactIconsKit.Icon, {
     icon: _users.users
   }), _react.default.createElement("a", {
     href: "#",
@@ -621,19 +654,7 @@ var Navbar = function Navbar(_ref) {
     icon: _dashboard.dashboard
   }), _react.default.createElement(_reactRouterDom.Link, {
     to: "/demo"
-  }, " ", _react.default.createElement(Text, null, "Demo"), " "))), _react.default.createElement(_reactSidenav.Nav, null, _react.default.createElement(IconCnt, null, _react.default.createElement(_reactIconsKit.Icon, {
-    icon: _users.users
-  }), _react.default.createElement(_reactRouterDom.Link, {
-    to: "/login"
-  }, " ", _react.default.createElement(Text, null, "Login"), " "))), _react.default.createElement(_reactSidenav.Nav, null, _react.default.createElement(IconCnt, null, _react.default.createElement(_reactIconsKit.Icon, {
-    icon: _users.users
-  }), _react.default.createElement(_reactRouterDom.Link, {
-    to: "/signup"
-  }, " ", _react.default.createElement(Text, null, "Signup"), " "))), _react.default.createElement(_reactSidenav.Nav, null, _react.default.createElement(IconCnt, null, _react.default.createElement(_reactIconsKit.Icon, {
-    icon: _dashboard.dashboard
-  }), _react.default.createElement(_reactRouterDom.Link, {
-    to: "/stream"
-  }, " ", _react.default.createElement(Text, null, "Stream"), " ")))))));
+  }, " ", _react.default.createElement(Text, null, "Demo"), " ")))))));
 };
 
 var mapState = function mapState(state) {
@@ -863,12 +884,12 @@ var Stream =
 function (_Component) {
   _inherits(Stream, _Component);
 
-  function Stream(props) {
+  function Stream() {
     var _this;
 
     _classCallCheck(this, Stream);
 
-    _this = _possibleConstructorReturn(this, _getPrototypeOf(Stream).call(this, props));
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(Stream).call(this));
     _this.state = {
       game: ''
     };
@@ -893,24 +914,6 @@ function (_Component) {
 
       this.props.loadStreamers();
     }
-    /*
-    <li class="nav-item">
-                <a class="nav-link" onClick={() => this.handleClick('League of Legends')} href="#">League of Legends</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" onClick={() => this.handleClick('Overwatch')} href="#" value="Overwatch">Overwatch</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" onClick={() => this.handleClick('Apex Legends')} href="#">Apex Legends</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" onClick={() => this.handleClick('Fortnite')} href="#">Fortnite</a>
-              </li>
-              <li className="nav-item" key={game}>
-                    <a className="nav-link" onClick={() => this.handleClick(game)} href="#">{game} </a>
-                  </li>
-    */
-
   }, {
     key: "render",
     value: function render() {
@@ -933,9 +936,7 @@ function (_Component) {
         }, _this2.props.games[game])));
       }), _react.default.createElement("h1", null, " ", this.props.games[0], " ")), _react.default.createElement("form", {
         id: "update-user-form",
-        onClick: function onClick() {
-          return _this2.handleClick('League of Legends');
-        }
+        onSubmit: this.handleSubmit
       }, _react.default.createElement("span", {
         className: "input-group-btn"
       }, _react.default.createElement("button", {
@@ -957,6 +958,24 @@ function (_Component) {
 
   return Stream;
 }(_react.Component); // <ReactTwitchEmbedVideo channel={streamer.channel.name} theme="dark" muted={1}/>
+
+/*
+<li class="nav-item">
+            <a class="nav-link" onClick={() => this.handleClick('League of Legends')} href="#">League of Legends</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" onClick={() => this.handleClick('Overwatch')} href="#" value="Overwatch">Overwatch</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" onClick={() => this.handleClick('Apex Legends')} href="#">Apex Legends</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" onClick={() => this.handleClick('Fortnite')} href="#">Fortnite</a>
+          </li>
+          <li className="nav-item" key={game}>
+                <a className="nav-link" onClick={() => this.handleClick(game)} href="#">{game} </a>
+              </li>
+*/
 
 
 exports.Stream = Stream;
@@ -1204,7 +1223,7 @@ function (_Component) {
         path: "/demo",
         component: _components.Demo
       })), _react.default.createElement(_reactRouterDom.Route, {
-        component: _components.Login
+        component: _components.Demo
       }));
     }
   }]);
@@ -1897,7 +1916,7 @@ var logout = function logout() {
               case 3:
                 dispatch(removeUser());
 
-                _history.default.push('/login');
+                _history.default.push('/demo');
 
                 _context3.next = 10;
                 break;

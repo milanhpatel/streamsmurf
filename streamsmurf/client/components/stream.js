@@ -5,8 +5,8 @@ import ReactTwitchEmbedVideo from 'react-twitch-embed-video'
 
 
 export class Stream extends Component {
-  constructor(props) {
-    super(props)
+  constructor() {
+    super()
     this.state = {
       game: ''
     }
@@ -27,25 +27,7 @@ export class Stream extends Component {
     // const userName = e.target.userName.value;
     this.props.loadStreamers()
   }
-
-  /*
-  <li class="nav-item">
-              <a class="nav-link" onClick={() => this.handleClick('League of Legends')} href="#">League of Legends</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" onClick={() => this.handleClick('Overwatch')} href="#" value="Overwatch">Overwatch</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" onClick={() => this.handleClick('Apex Legends')} href="#">Apex Legends</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" onClick={() => this.handleClick('Fortnite')} href="#">Fortnite</a>
-            </li>
-            <li className="nav-item" key={game}>
-                  <a className="nav-link" onClick={() => this.handleClick(game)} href="#">{game} </a>
-                </li>
-*/
-
+  
   render() {
     return (
       <div>
@@ -63,7 +45,7 @@ export class Stream extends Component {
           </ul>
           }
 
-        <form id="update-user-form" onClick={() => this.handleClick('League of Legends')}>
+        <form id="update-user-form" onSubmit={this.handleSubmit}>
           <span className="input-group-btn">
             <button className="btn-default" type="submit">
               Start dashboard
@@ -93,6 +75,25 @@ export class Stream extends Component {
 }
 
 // <ReactTwitchEmbedVideo channel={streamer.channel.name} theme="dark" muted={1}/>
+  /*
+  <li class="nav-item">
+              <a class="nav-link" onClick={() => this.handleClick('League of Legends')} href="#">League of Legends</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" onClick={() => this.handleClick('Overwatch')} href="#" value="Overwatch">Overwatch</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" onClick={() => this.handleClick('Apex Legends')} href="#">Apex Legends</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" onClick={() => this.handleClick('Fortnite')} href="#">Fortnite</a>
+            </li>
+            <li className="nav-item" key={game}>
+                  <a className="nav-link" onClick={() => this.handleClick(game)} href="#">{game} </a>
+                </li>
+*/
+
+
 
 const mapStateToProps = state => ({
   streamers: state.stream.streamers,
